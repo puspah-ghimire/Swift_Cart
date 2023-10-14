@@ -12,6 +12,12 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+
+      backgroundColor: theme => ({
+        'swiftcart-primary': '#0093E0',
+        'swiftcart-light': '#ABE2FF',
+        'swiftcart-dark': '#0177B5',
+      })
     },
   },
   plugins: [],
