@@ -9,7 +9,7 @@ const Searchbar = () => {
         className=' text-black py-2 pl-5 rounded-full rounded-r-none bg-swiftcart-light' 
         placeholder='Search Products' />
 
-        <FontAwesomeIcon icon={faMagnifyingGlass} className=' h-5 px-4'></FontAwesomeIcon>
+        <FontAwesomeIcon icon={faMagnifyingGlass} className=' h-5 px-4 cursor-pointer'></FontAwesomeIcon>
     </div>
   )
 }

@@ -17,7 +17,15 @@ module.exports = {
         'swiftcart-primary': '#0093E0',
         'swiftcart-light': '#ABE2FF',
         'swiftcart-dark': '#0177B5',
-      })
+        'swiftcart-lighter': '#DFF4FF',
+      }),
+
+      colors: {
+        'swiftcart-primary': '#0093E0',
+        'swiftcart-light': '#ABE2FF',
+        'swiftcart-dark': '#0177B5',
+        'swiftcart-lighter': '#DFF4FF',
+      }
     },
   },
   plugins: [],
