@@ -1,25 +1,36 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { auth, googleAuth } from '@/app/firebase/firebase'
 import { signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
-import Link from 'next/link'
+import { useAuth } from '@/app/firebase/auth'
+import { useRouter } from 'next/navigation'
 
 const loginForm = () => {
-  const [username, setUsername] = useState(null)
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
 
-  console.log(auth?.currentUser?.email)
+  const {authUser, isLoading} = useAuth()
+  const router = useRouter()
+
+  useEffect(()=>{
+    if ( !isLoading && authUser ) {
+      router.push("../")
+    }
+  }, [authUser, isLoading])
 
   const signInHandler = async () => {
     if (!email || !password) return
-    try { const user = await signInWithEmailAndPassword(auth, email, password) }
+    try { const user = await signInWithEmailAndPassword(auth, email, password)
+    console.log(user)
+    router.push("../")}
     catch(error) { console.error(error) }
   }
 
   const signInGoogleHandler = async () => {
-    try { const user = await signInWithPopup(auth, googleAuth) }
+    try { const user = await signInWithPopup(auth, googleAuth)
+    console.log(user)
+    router.push("../") }
     catch(error) { console.error(error) }
   }
   

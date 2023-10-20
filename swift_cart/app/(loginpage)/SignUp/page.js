@@ -26,7 +26,7 @@ const SignUpPage = () => {
     try { const user = await signInWithPopup(auth, googleAuth) }
     catch(error) { console.error(error) }
   }
-  
+
 
   return (
     <>
