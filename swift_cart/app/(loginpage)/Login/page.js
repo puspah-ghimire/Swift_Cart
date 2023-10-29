@@ -5,6 +5,7 @@ import { auth, googleAuth } from '@/app/firebase/firebase'
 import { signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
 import { useAuth } from '@/app/firebase/auth'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const loginForm = () => {
   const [email, setEmail] = useState(null)
@@ -68,10 +69,10 @@ const loginForm = () => {
           </div>
           <div className='flex items-center gap-4 my-4'>
             <h2 className=' font-medium'>New to Swift Cart?</h2>
-            <button
+            <Link href="./SignUp"
             className='bg-swiftcart-primary text-white px-10 py-2 rounded-full font-semibold hover:bg-swiftcart-dark'>
               Sign Up
-            </button>
+            </Link>
           </div>
       </div>
     </>
