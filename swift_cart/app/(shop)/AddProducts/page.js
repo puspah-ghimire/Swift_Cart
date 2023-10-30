@@ -2,61 +2,44 @@
 
 import React from 'react'
 import { useState } from 'react'
+import { storage, db } from '@/app/firebase/firebase'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { v4 } from 'uuid'
+import { addDoc, collection } from 'firebase/firestore'
 
 const page = () => {
-  const [productName, setProductName] = useState('')
-  const [productPrice, setProductPrice] = useState(0)
-  const [productImg, setProductImg] = useState(null)
-  const [error, setError] = useState('')
+  const [productName, setProductName] = useState('') 
+  const [productPrice, setProductPrice] = useState(0) 
+  const [productImage, setproductImage] = useState(null)
 
-  const types = ['image/png', 'image/jpeg']
+  const upload = () => {
+    if (productImage == null) return
+    
+    const productImageRef = ref(storage, `productImages/${productImage.name + v4()}`)
+    
+    uploadBytes(productImageRef, productImage).then(()=> {
+      alert("Image Uploaded")
 
-  const productImgHandler = (e) => {
-    let selectedFile = e.target.files[0]
-    if (selectedFile && types.includes(selectedFile.type)){
-      setProductImg(selectedFile)
-      setError('')
-    } else {
-      setProductImg(null)
-      setError("Pls select png or jpeg image")
-    }
-  }
-
-  const addProduct =(e)=> {
-    e.preventDefault()
-    console.log(productName, productPrice, productImg)
+      getDownloadURL(productImageRef).then(url => {
+        addDoc(collection(db, "products"), {
+          productName: productName,
+          productPrice: productPrice,
+          productImg: url
+        });
+    })
+    })
   }
 
   return (
-    <>
     <div>
-      <h2>Add Products</h2>
+      <input type="text" placeholder='product name' onChange={e=>setProductName(e.target.value)}/>
       <br />
-      <form action="" onSubmit={addProduct}>
-        <label htmlFor="product-name">Product Name</label>
-        <input type="text" required
-          onChange={e => setProductName(e.target.value)} value={productName}
-          className=' border-2 border-blue-700' />
-
-        <br />
-
-        <label htmlFor="product-price">Product Price</label>
-        <input type="number" required
-          onChange={e => setProductPrice(e.target.value)} value={productPrice}
-          className=' border-2 border-blue-700' />
-
-        <br />
-        <label htmlFor="product-image">Product Image</label>
-        <input type="file" 
-          onChange={productImgHandler}/>
-        <br />
-        <button className='border-black border-2'>ADD</button>
-      </form>
-
-      {error&&<span>{error}</span>}
+      <input type="number" placeholder='price' onChange={e=>setProductPrice(e.target.value)}/>
+      <br />
+      <input type="file" onChange={e => setproductImage(e.target.files[0])} />
+      <br />
+      <button onClick={upload}>ADD</button>
     </div>
-    </>
   )
 }
-
 export default page
