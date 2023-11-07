@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "swift-cart",
   "version": "1.0.0",
   "description": "",
@@ -15,6 +16,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "firebase": "^10.5.2",
-    "firebase-admin": "^11.11.0"
+    "firebase-admin": "^11.11.0",
+    "nodemon": "^3.0.1"
   }
 }

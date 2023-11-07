@@ -1,12 +1,12 @@
 class Product {
-    constructor(id, name, price, retailer, amountInStock) {
-      (this.id = id),
-        (this.name = name),
-        (this.price = price),
-        (this.retailer = retailer),
-        (this.amountInStock = amountInStock);
-    }
+  constructor(id, name, price, retailer, amountInStock) {
+    (this.id = id),
+      (this.name = name),
+      (this.price = price),
+      (this.retailer = retailer),
+      (this.amountInStock = amountInStock);
   }
-  
-exports.moudle = Product;
+}
+
+export default Product;
 
