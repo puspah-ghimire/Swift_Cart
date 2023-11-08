@@ -36,7 +36,12 @@ export const getProducts = async (req, res, next) => {
           doc.id,
           doc.data().name,
           doc.data().price,
+          doc.data().description,
+          doc.data().rating,
+          doc.data().images,
+          doc.data().category,
           doc.data().retailer,
+          doc.data().numOfReviews,
           doc.data().amountInStock,
         );
         productArray.push(product);
