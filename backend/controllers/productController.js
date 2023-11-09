@@ -9,10 +9,7 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
-import { query, where, orderBy, startAfter, limit} from "firebase/firestore";
 
-
-// Create Products
 // Create Products
 export const createProduct = async (req, res, next) => {
   try {
@@ -31,7 +28,6 @@ export const createProduct = async (req, res, next) => {
   }
 };
 
-//Get all products
 // Get all products with search, category, and price range filters along with pagination
 export const getProducts = async (req, res, next) => {
   try {
