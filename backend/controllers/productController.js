@@ -9,6 +9,7 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
+import { query, where, orderBy, startAfter, limit} from "firebase/firestore";
 
 
 // Create Products
@@ -23,28 +24,73 @@ export const createProduct = async (req, res, next) => {
 };
 
 //Get all products
+// Get all products with search, category, and price range filters along with pagination
 export const getProducts = async (req, res, next) => {
   try {
-    const products = await getDocs(collection(db, 'products'));
+    const { search, category, minPrice, maxPrice, page } = req.query;
+    const productsPerPage = 8; // Set the number of products per page
+
+    // Calculate the start index based on the page
+    const startIndex = page ? (parseInt(page) - 1) * productsPerPage : 0;
+
+    // Get all products
+    const productsRef = collection(db, 'products');
+    const productsSnapshot = await getDocs(productsRef);
+
     const productArray = [];
 
-    if (products.empty) {
+    if (productsSnapshot.empty) {
       res.status(400).send('No Products found');
     } else {
-      products.forEach((doc) => {
+      let count = 0; // Track the number of products added
+
+      productsSnapshot.forEach((doc) => {
+        // Skip products until reaching the start index
+        if (count < startIndex) {
+          count++;
+          return;
+        }
+
+        const productData = doc.data();
+
+        // Apply search filter if provided
+        if (search && !productData.name.toLowerCase().includes(search.toLowerCase())) {
+          return;
+        }
+
+        // Apply category filter if provided
+        if (category && productData.category.toLowerCase() !== category.toLowerCase()) {
+          return;
+        }
+
+        // Apply price range filter if provided
+        if (
+          (minPrice && productData.price < parseFloat(minPrice)) ||
+          (maxPrice && productData.price > parseFloat(maxPrice))
+        ) {
+          return;
+        }
+
         const product = new Product(
           doc.id,
-          doc.data().name,
-          doc.data().price,
-          doc.data().description,
-          doc.data().rating,
-          doc.data().images,
-          doc.data().category,
-          doc.data().retailer,
-          doc.data().numOfReviews,
-          doc.data().amountInStock,
+          productData.name,
+          productData.price,
+          productData.description,
+          productData.rating,
+          productData.images,
+          productData.category,
+          productData.retailer,
+          productData.numOfReviews,
+          productData.amountInStock
         );
         productArray.push(product);
+
+        count++;
+
+        // Stop adding products once the desired number per page is reached
+        if (count >= startIndex + productsPerPage) {
+          return;
+        }
       });
 
       res.status(200).send(productArray);
