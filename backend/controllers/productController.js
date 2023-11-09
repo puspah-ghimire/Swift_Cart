@@ -13,11 +13,19 @@ import { query, where, orderBy, startAfter, limit} from "firebase/firestore";
 
 
 // Create Products
+// Create Products
 export const createProduct = async (req, res, next) => {
   try {
+    const { name, category, price, description, retailer } = req.body;
+
+    // Check if mandatory fields are provided
+    if (!name || !category || !price || !description || !retailer) {
+      return res.status(400).send('Name, category, price, description, and retailer are mandatory fields');
+    }
+
     const data = req.body;
     await addDoc(collection(db, 'products'), data);
-    res.status(200).send('product created successfully');
+    res.status(200).send('Product created successfully');
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -27,50 +35,25 @@ export const createProduct = async (req, res, next) => {
 // Get all products with search, category, and price range filters along with pagination
 export const getProducts = async (req, res, next) => {
   try {
-    const { search, category, minPrice, maxPrice, page } = req.query;
-    const productsPerPage = 8; // Set the number of products per page
-
-    // Calculate the start index based on the page
+    const { page } = req.query;
+    const productsPerPage = 8;
     const startIndex = page ? (parseInt(page) - 1) * productsPerPage : 0;
 
-    // Get all products
     const productsRef = collection(db, 'products');
     const productsSnapshot = await getDocs(productsRef);
 
     const productArray = [];
 
     if (productsSnapshot.empty) {
-      res.status(400).send('No Products found');
-    } else {
-      let count = 0; // Track the number of products added
+      res.status(404).send('No Products found');
+      return;
+    }
 
-      productsSnapshot.forEach((doc) => {
-        // Skip products until reaching the start index
-        if (count < startIndex) {
-          count++;
-          return;
-        }
+    let count = 0;
 
+    productsSnapshot.forEach((doc) => {
+      if (count >= startIndex && productArray.length < productsPerPage) {
         const productData = doc.data();
-
-        // Apply search filter if provided
-        if (search && !productData.name.toLowerCase().includes(search.toLowerCase())) {
-          return;
-        }
-
-        // Apply category filter if provided
-        if (category && productData.category.toLowerCase() !== category.toLowerCase()) {
-          return;
-        }
-
-        // Apply price range filter if provided
-        if (
-          (minPrice && productData.price < parseFloat(minPrice)) ||
-          (maxPrice && productData.price > parseFloat(maxPrice))
-        ) {
-          return;
-        }
-
         const product = new Product(
           doc.id,
           productData.name,
@@ -84,19 +67,13 @@ export const getProducts = async (req, res, next) => {
           productData.amountInStock
         );
         productArray.push(product);
+      }
+      count++;
+    });
 
-        count++;
-
-        // Stop adding products once the desired number per page is reached
-        if (count >= startIndex + productsPerPage) {
-          return;
-        }
-      });
-
-      res.status(200).send(productArray);
-    }
+    res.status(200).send(productArray);
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
