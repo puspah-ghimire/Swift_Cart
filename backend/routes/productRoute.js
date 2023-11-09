@@ -6,12 +6,19 @@ import {
     updateProduct,
     deleteProduct,
 } from '../controllers/productController.js';
+import { authenticateAdmin } from '../Middleware/authMiddleware.js';
 
 const router = express.Router();
 router.get('/products', getProducts);
-router.post('/new', createProduct);
 router.get('/product/:id', getProduct);
-router.put('/update/:id', updateProduct);
-router.delete('/delete/:id', deleteProduct);
+
+// Admin-only route to create a new product
+router.post('/new', authenticateAdmin, createProduct);
+
+// Admin-only route to update a product by ID
+router.put('/update/:id', authenticateAdmin, updateProduct);
+
+// Admin-only route to delete a product by ID
+router.delete('/delete/:id', authenticateAdmin, deleteProduct);
 
 export default router;
