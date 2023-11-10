@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, confirmPasswordReset, getAuth, signOut, updatePassword, updateProfile } from 'firebase/auth';
-import { doc, setDoc, getDoc, collection, getDocs, updateDoc } from 'firebase/firestore';
+import { doc, query, where, setDoc, getDoc, collection, getDocs, updateDoc } from 'firebase/firestore';
 import db from '../config/firebase.js';
 
 // Register a new user with email, password, name, and role
@@ -26,6 +26,15 @@ export const register = async (req, res, next) => {
     }
 };
 
+// Check whether email is registered or not
+export const isEmailRegistered = async (email) => {
+    const usersRef = collection(db, 'users');
+    const emailQuery = query(usersRef, where('email', '==', email));
+    const emailSnapshot = await getDocs(emailQuery);
+
+    return !emailSnapshot.empty;
+};
+
 // Login user with email and password
 export const login = async (req, res, next) => {
     try {
@@ -34,6 +43,12 @@ export const login = async (req, res, next) => {
         // Check if mandatory fields are provided
         if (!email || !password) {
             return res.status(400).send('Email and password are mandatory fields');
+        }
+
+        // Check if the email is registered
+        const isRegistered = await isEmailRegistered(email);
+        if (!isRegistered) {
+            return res.status(404).send('Email is not registered');
         }
 
         const auth = getAuth();
@@ -225,6 +240,12 @@ export const forgotUserPassword = async (req, res, next) => {
             return res.status(400).send('Email is a mandatory field');
         }
 
+        // Check if the email is registered
+        const isRegistered = await isEmailRegistered(email);
+        if (!isRegistered) {
+            return res.status(404).send('Email is not registered');
+        }
+
         const auth = getAuth();
         await sendPasswordResetEmail(auth, email);
 
@@ -244,6 +265,12 @@ export const resetUserPassword = async (req, res, next) => {
             return res
                 .status(400)
                 .send('Email, new password, and reset code are mandatory fields');
+        }
+
+        // Check if the email is registered
+        const isRegistered = await isEmailRegistered(email);
+        if (!isRegistered) {
+            return res.status(404).send('Email is not registered');
         }
 
         const auth = getAuth();
