@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, signOut, updatePassword} from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, signOut, updatePassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc, getDoc, collection, getDocs, updateDoc } from 'firebase/firestore';
 import db from '../config/firebase.js';
 
@@ -184,3 +184,34 @@ export const updateUserRole = async (req, res, next) => {
         res.status(500).send(error.message);
     }
 };
+
+export const updateUserProfile = async (req, res, next) => {
+    try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user) {
+            const { userId, newName, newAvatar } = req.body;
+
+            // Check if the user is updating their own profile
+            if (user.uid !== userId) {
+                return res.status(403).send('Access denied. Users can only update their own profile.');
+            }
+
+            // Update the Firebase authentication profile
+            await updateProfile(user, { displayName: newName, photoURL: newAvatar });
+
+            // Update the user profile in Firestore if needed
+            const userDoc = doc(db, 'users', user.uid);
+            await updateDoc(userDoc, { name: newName, avatar: newAvatar });
+
+            res.status(200).send('Profile updated successfully');
+        } else {
+            res.status(401).send('User not authenticated');
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+
