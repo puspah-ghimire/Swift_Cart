@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, signOut, updatePassword} from 'firebase/auth';
-import { doc, setDoc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, setDoc, getDoc, collection, getDocs, updateDoc } from 'firebase/firestore';
 import db from '../config/firebase.js';
 
 // Register a new user with email, password, name, and role
@@ -82,66 +82,105 @@ export const getUserInfo = async (req, res, next) => {
 
 // Get all users (only accessible to admin)
 export const getAllUsers = async (req, res, next) => {
-  try {
-    const auth = getAuth();
-    const user = auth.currentUser;
+    try {
+        const auth = getAuth();
+        const user = auth.currentUser;
 
-    if (user && user.uid) {
-      // Check if the user is an admin
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
-      if (userDoc.exists() && userDoc.data().role === 'admin') {
-        // User is an admin, proceed to fetch all users
-        const usersRef = collection(db, 'users');
-        const usersSnapshot = await getDocs(usersRef);
+        if (user && user.uid) {
+            // Check if the user is an admin
+            const userDoc = await getDoc(doc(db, 'users', user.uid));
+            if (userDoc.exists() && userDoc.data().role === 'admin') {
+                // User is an admin, proceed to fetch all users
+                const usersRef = collection(db, 'users');
+                const usersSnapshot = await getDocs(usersRef);
 
-        const usersArray = [];
+                const usersArray = [];
 
-        usersSnapshot.forEach((doc) => {
-          const userData = doc.data();
-          // Exclude sensitive information (e.g., password) before sending
-          delete userData.password;
-          // Include userId in the userData
-          userData.userId = doc.id;
-          usersArray.push(userData);
-        });
+                usersSnapshot.forEach((doc) => {
+                    const userData = doc.data();
+                    // Exclude sensitive information (e.g., password) before sending
+                    delete userData.password;
+                    // Include userId in the userData
+                    userData.userId = doc.id;
+                    usersArray.push(userData);
+                });
 
-        res.status(200).send(usersArray);
-      } else {
-        res.status(403).send('Access denied. Only admin users can access this endpoint.');
-      }
-    } else {
-      res.status(401).send('User not authenticated');
+                res.status(200).send(usersArray);
+            } else {
+                res.status(403).send('Access denied. Only admin users can access this endpoint.');
+            }
+        } else {
+            res.status(401).send('User not authenticated');
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
     }
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
 };
 
 // Update User Password
 export const updateUserPassword = async (req, res, next) => {
-  try {
-    const auth = getAuth();
-    const user = auth.currentUser;
+    try {
+        const auth = getAuth();
+        const user = auth.currentUser;
 
-    if (user) {
-      const { currentPassword, newPassword } = req.body;
+        if (user) {
+            const { currentPassword, newPassword } = req.body;
 
-      // Verify the current password before updating
-      try {
-        await signInWithEmailAndPassword(auth, user.email, currentPassword);
-      } catch (error) {
-        // Incorrect current password
-        return res.status(400).send('Incorrect current password');
-      }
+            // Verify the current password before updating
+            try {
+                await signInWithEmailAndPassword(auth, user.email, currentPassword);
+            } catch (error) {
+                // Incorrect current password
+                return res.status(400).send('Incorrect current password');
+            }
 
-      // Update the Firebase authentication password
-      await updatePassword(user, newPassword);
+            // Update the Firebase authentication password
+            await updatePassword(user, newPassword);
 
-      res.status(200).send('Password updated successfully');
-    } else {
-      res.status(401).send('User not authenticated');
+            res.status(200).send('Password updated successfully');
+        } else {
+            res.status(401).send('User not authenticated');
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
     }
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+};
+
+// Update user role (admin only)
+export const updateUserRole = async (req, res, next) => {
+    try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user && user.uid) {
+            const { userId, newRole } = req.body;
+
+            // Check if the user is an admin
+            const adminDoc = await getDoc(doc(db, 'users', user.uid));
+            if (adminDoc.exists() && adminDoc.data().role === 'admin') {
+                // User is an admin, proceed to update the user role
+                if (!userId || !newRole) {
+                    return res.status(400).send('UserId and newRole are mandatory fields');
+                }
+
+                const userDoc = doc(db, 'users', userId);
+                const userSnapshot = await getDoc(userDoc);
+
+                if (userSnapshot.exists()) {
+                    // Update the user role
+                    await updateDoc(userDoc, { role: newRole });
+
+                    res.status(200).send('User role updated successfully');
+                } else {
+                    res.status(404).send('User not found');
+                }
+            } else {
+                res.status(403).send('Access denied. Only admin users can update user roles.');
+            }
+        } else {
+            res.status(401).send('User not authenticated');
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
 };
