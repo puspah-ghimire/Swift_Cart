@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, signOut, updatePassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, confirmPasswordReset, getAuth, signOut, updatePassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc, getDoc, collection, getDocs, updateDoc } from 'firebase/firestore';
 import db from '../config/firebase.js';
 
@@ -185,6 +185,7 @@ export const updateUserRole = async (req, res, next) => {
     }
 };
 
+// Update User Profile
 export const updateUserProfile = async (req, res, next) => {
     try {
         const auth = getAuth();
@@ -201,7 +202,7 @@ export const updateUserProfile = async (req, res, next) => {
             // Update the Firebase authentication profile
             await updateProfile(user, { displayName: newName, photoURL: newAvatar });
 
-            // Update the user profile in Firestore if needed
+            // Update the user profile in Firestore
             const userDoc = doc(db, 'users', user.uid);
             await updateDoc(userDoc, { name: newName, avatar: newAvatar });
 
@@ -214,4 +215,43 @@ export const updateUserProfile = async (req, res, next) => {
     }
 };
 
+// Forgot user password
+export const forgotUserPassword = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+
+        // Check if mandatory field is provided
+        if (!email) {
+            return res.status(400).send('Email is a mandatory field');
+        }
+
+        const auth = getAuth();
+        await sendPasswordResetEmail(auth, email);
+
+        res.status(200).send('Password reset email sent successfully');
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+};
+
+// Reset user password
+export const resetUserPassword = async (req, res, next) => {
+    try {
+        const { email, newPassword, resetCode } = req.body;
+
+        // Check if mandatory fields are provided
+        if (!email || !newPassword || !resetCode) {
+            return res
+                .status(400)
+                .send('Email, new password, and reset code are mandatory fields');
+        }
+
+        const auth = getAuth();
+        await confirmPasswordReset(auth, resetCode, newPassword);
+
+        res.status(200).send('Password reset successful');
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+};
 
