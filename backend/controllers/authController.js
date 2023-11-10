@@ -67,6 +67,7 @@ export const getUserInfo = async (req, res, next) => {
             const userDoc = await getDoc(doc(db, 'users', user.uid));
             if (userDoc.exists()) {
                 const userData = userDoc.data();
+                userData.userId = user.uid;
                 res.status(200).send(userData);
             } else {
                 res.status(404).send('User not found');
@@ -81,37 +82,39 @@ export const getUserInfo = async (req, res, next) => {
 
 // Get all users (only accessible to admin)
 export const getAllUsers = async (req, res, next) => {
-    try {
-        const auth = getAuth();
-        const user = auth.currentUser;
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-        if (user && user.uid) {
-            // Check if the user is an admin
-            const userDoc = await getDoc(doc(db, 'users', user.uid));
-            if (userDoc.exists() && userDoc.data().role === 'admin') {
-                // User is an admin, proceed to fetch all users
-                const usersRef = collection(db, 'users');
-                const usersSnapshot = await getDocs(usersRef);
+    if (user && user.uid) {
+      // Check if the user is an admin
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (userDoc.exists() && userDoc.data().role === 'admin') {
+        // User is an admin, proceed to fetch all users
+        const usersRef = collection(db, 'users');
+        const usersSnapshot = await getDocs(usersRef);
 
-                const usersArray = [];
+        const usersArray = [];
 
-                usersSnapshot.forEach((doc) => {
-                    const userData = doc.data();
-                    // Exclude sensitive information (e.g., password) before sending
-                    delete userData.password;
-                    usersArray.push(userData);
-                });
+        usersSnapshot.forEach((doc) => {
+          const userData = doc.data();
+          // Exclude sensitive information (e.g., password) before sending
+          delete userData.password;
+          // Include userId in the userData
+          userData.userId = doc.id;
+          usersArray.push(userData);
+        });
 
-                res.status(200).send(usersArray);
-            } else {
-                res.status(403).send('Access denied. Only admin users can access this endpoint.');
-            }
-        } else {
-            res.status(401).send('User not authenticated');
-        }
-    } catch (error) {
-        res.status(500).send(error.message);
+        res.status(200).send(usersArray);
+      } else {
+        res.status(403).send('Access denied. Only admin users can access this endpoint.');
+      }
+    } else {
+      res.status(401).send('User not authenticated');
     }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 // Update User Password
