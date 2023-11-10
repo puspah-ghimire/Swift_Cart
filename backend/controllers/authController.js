@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, signOut, updatePassword} from 'firebase/auth';
 import { doc, setDoc, getDoc, collection, getDocs } from 'firebase/firestore';
 import db from '../config/firebase.js';
 
@@ -112,4 +112,33 @@ export const getAllUsers = async (req, res, next) => {
     } catch (error) {
         res.status(500).send(error.message);
     }
+};
+
+// Update User Password
+export const updateUserPassword = async (req, res, next) => {
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      const { currentPassword, newPassword } = req.body;
+
+      // Verify the current password before updating
+      try {
+        await signInWithEmailAndPassword(auth, user.email, currentPassword);
+      } catch (error) {
+        // Incorrect current password
+        return res.status(400).send('Incorrect current password');
+      }
+
+      // Update the Firebase authentication password
+      await updatePassword(user, newPassword);
+
+      res.status(200).send('Password updated successfully');
+    } else {
+      res.status(401).send('User not authenticated');
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
