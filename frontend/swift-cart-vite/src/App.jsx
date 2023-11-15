@@ -11,6 +11,8 @@ import Login from './pages/registration/Login';
 import ProductInfo from './pages/productInfo/ProductInfo';
 import UpdateProduct from './pages/admin/page/UpdateProduct';
 import AddProduct from './pages/admin/page/AddProduct';
+import EditProfile from './pages/profile/EditProfile';
+import Profile from './pages/profile/Profile';
 
 const App = () => {
   return (
@@ -27,6 +29,8 @@ const App = () => {
           <Route path='/productinfo/:id' element={<ProductInfo/>} />
           <Route path='/addproduct' element={<AddProduct/>} />
           <Route path='/updateproduct' element={<UpdateProduct/>} />
+          <Route path='/editprofile/:id' element={<EditProfile/>} />
+          <Route path='/profile/:id' element={<Profile/>} />
         </Routes>
     </Router>
     </MyState>

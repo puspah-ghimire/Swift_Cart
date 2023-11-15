@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { BsFillCloudSunFill } from 'react-icons/bs'
 import { FiSun } from 'react-icons/fi'
 import { RxCross2 } from 'react-icons/rx'
+import profile from '/profile.svg'
 
 const Navbar = () => {
   const context = useContext(myContext)
@@ -73,11 +74,12 @@ const Navbar = () => {
                       </a>
                     </div>
                     <div className="flow-root">
-                      <Link to={'/'} className="-m-2 block p-2 font-medium text-gray-900 cursor-pointer">
+                      <Link to={'/profile/1'} className="-m-2 block p-2 font-medium text-gray-900 cursor-pointer">
                         <img
                           className="inline-block w-10 h-10 rounded-full"
-                          src="https://overreacted.io/static/profile-pic-c715447ce38098828758e525a1128b87.jpg"
-                          alt="Dan_Abromov" />                                        </Link>
+                          src={profile}
+                          alt="Dan_Abromov" />                                        
+                      </Link>
                     </div>
                   </div>
 
@@ -133,11 +135,11 @@ const Navbar = () => {
                   </div>
 
                   <div className="hidden lg:ml-8 lg:flex">
-                    <a href="#" className="flex items-center text-gray-700 ">
+                    <a href="/profile/1" className="flex items-center text-gray-700 ">
                       <img
                         className="inline-block w-10 h-10 rounded-full"
-                        src="https://overreacted.io/static/profile-pic-c715447ce38098828758e525a1128b87.jpg"
-                        alt="Dan_Abromov" />
+                        src={profile}
+                        alt="profile" />
                     </a>
                   </div>
 

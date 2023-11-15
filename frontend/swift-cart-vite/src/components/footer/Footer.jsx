@@ -7,7 +7,7 @@ export default function Footer() {
     const context = useContext(myContext)
     const { toggleMode, mode } = context
     return (
-        <footer className="text-white body-font bg-gray-300" style={{ backgroundColor: mode === 'dark' ? 'rgb(46 49 55)' : '', color: mode === 'dark' ? 'white' : '', }}>
+        <footer style={{ backgroundColor: mode === 'dark' ? 'rgb(46 49 55)' : '', color: mode === 'dark' ? 'white' : '', }}>
             <div className="bg-sky-500">
                 <div className="container px-5 py-3 mx-auto flex items-center sm:flex-row flex-col">
                     <Link to={'/'} className='flex'>
