@@ -74,7 +74,7 @@ export const getProducts = async (req, res, next) => {
       }
       count++;
     });
-    
+
     if (productArray.length === 0) {
       res.status(404).send('No Products found');
       return;
