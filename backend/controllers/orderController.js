@@ -1,7 +1,7 @@
 import db from '../config/firebase.js';
 import Order from '../models/orderModels.js';
 import { getAuth } from 'firebase/auth';
-import { doc, getDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { doc, query, where, getDocs, getDoc, addDoc, updateDoc, deleteDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 export const createOrder = async (req, res, next) => {
     try {
@@ -57,7 +57,7 @@ export const createOrder = async (req, res, next) => {
             itemsPrice,
             shippingPrice,
             itemsPrice + shippingPrice,
-            "Success"
+            "Pending"
         );
 
         // Save order to Firestore
@@ -74,4 +74,190 @@ export const createOrder = async (req, res, next) => {
     }
 };
 
+// Format timestamp to full date
+const formatDate = (timestamp) => {
+    const date = timestamp.toDate();
+    return date.toISOString();
+};
 
+export const getSingleOrder = async (req, res, next) => {
+    try {
+        const orderId = req.params.id;
+        const orderRef = doc(db, 'orders', orderId);
+        const orderSnapshot = await getDoc(orderRef);
+
+        if (orderSnapshot.exists()) {
+            const orderData = orderSnapshot.data();
+
+            // Fetch user details
+            const userRef = doc(db, 'users', orderData.user.userId);
+            const userSnapshot = await getDoc(userRef);
+
+            if (userSnapshot.exists()) {
+                const userData = userSnapshot.data();
+
+                // Display order details with formatted timestamp and user information
+                const orderWithFormattedDate = {
+                    ...orderData,
+                    createdAt: formatDate(orderData.createdAt),
+                    paidAt: formatDate(orderData.paidAt),
+                    user: {
+                        userId: orderData.user.userId,
+                        name: userData.name,
+                        email: userData.email,
+                    },
+                };
+
+                // Remove deliveredAt field
+                delete orderWithFormattedDate.deliveredAt;
+
+                res.status(200).json(orderWithFormattedDate);
+            } else {
+                res.status(404).send('User not found');
+            }
+        } else {
+            res.status(404).send('Order not found');
+        }
+    } catch (error) {
+        res.status(500).send(`Error fetching order: ${error.message}`);
+    }
+};
+
+export const myOrders = async (req, res, next) => {
+    try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        const userId = user.uid;
+
+        const ordersRef = collection(db, 'orders');
+        const ordersQuery = query(ordersRef, where('user.userId', '==', userId));
+
+        const ordersSnapshot = await getDocs(ordersQuery);
+
+        if (ordersSnapshot.empty) {
+            return res.status(404).send('No orders found');
+        }
+
+        const userOrders = [];
+
+        ordersSnapshot.forEach((doc) => {
+            const orderData = doc.data();
+            const formattedPaidAt = formatDate(orderData.paidAt);
+            const formattedcreatedAt = formatDate(orderData.createdAt);
+
+            // Exclude user information and format date in the response
+            const { user, deliveredAt, ...orderWithoutUser } = orderData;
+            const orderWithFormattedDate = {
+                ...orderWithoutUser,
+                orderId: doc.id,
+                paidAt: formattedPaidAt,
+                createdAt: formattedcreatedAt,
+            };
+
+            userOrders.push(orderWithFormattedDate);
+        });
+
+        res.status(200).json(userOrders);
+    } catch (error) {
+        res.status(500).send(`Error fetching user orders: ${error.message}`);
+    }
+};
+
+export const getAllOrders = async (req, res, next) => {
+    try {
+        const ordersRef = collection(db, 'orders');
+        const ordersSnapshot = await getDocs(ordersRef);
+
+        if (ordersSnapshot.empty) {
+            return res.status(404).send('No orders found');
+        }
+
+        const allOrders = [];
+
+        ordersSnapshot.forEach((doc) => {
+            const orderData = doc.data();
+
+            // Convert createdAt and paidAt timestamps to ISO strings using formatDate
+            const formattedCreatedAt = formatDate(orderData.createdAt);
+            const formattedPaidAt = formatDate(orderData.paidAt);
+
+            // Include the formattedCreatedAt and formattedPaidAt in the response
+            const orderWithFormattedDate = {
+                ...orderData,
+                orderId: doc.id,
+                createdAt: formattedCreatedAt,
+                paidAt: formattedPaidAt,
+            };
+
+            allOrders.push(orderWithFormattedDate);
+        });
+
+        res.status(200).send(allOrders);
+    } catch (error) {
+        res.status(500).send(`Error fetching all orders: ${error.message}`);
+    }
+};
+
+export const updateOrder = async (req, res, next) => {
+    try {
+        const orderId = req.params.id;
+        const { orderStatus } = req.body;
+
+        // Get the order document
+        const orderDoc = doc(db, 'orders', orderId);
+        const orderSnapshot = await getDoc(orderDoc);
+
+        if (!orderSnapshot.exists()) {
+            return res.status(404).send('Order not found');
+        }
+
+        const orderData = orderSnapshot.data();
+
+        // Check if orderStatus is different from the current orderStatus and is set to "Delivered"
+        if (orderStatus === 'Delivered' && orderStatus !== orderData.orderStatus) {
+            // Update orderStatus and set deliveredAt to the current timestamp
+            const updatedOrder = {
+                orderStatus,
+                deliveredAt: serverTimestamp(),
+            };
+
+            // Update the order document
+            await updateDoc(orderDoc, updatedOrder);
+
+            res.status(200).send('Order updated successfully');
+        } else if (orderStatus === 'Pending' && orderStatus !== orderData.orderStatus) {
+            // Update orderStatus to "Pending" without changing deliveredAt or amountInStock
+            const updatedOrder = { orderStatus };
+
+            // Update the order document
+            await updateDoc(orderDoc, updatedOrder);
+
+            res.status(200).send('Order updated successfully');
+        } else {
+            res.status(400).send('Invalid orderStatus');
+        }
+    } catch (error) {
+        res.status(500).send(`Error updating order: ${error.message}`);
+    }
+};
+
+export const deleteOrder = async (req, res, next) => {
+    try {
+        const orderId = req.params.id;
+
+        // Get the order document
+        const orderDoc = doc(db, 'orders', orderId);
+        const orderSnapshot = await getDoc(orderDoc);
+
+        if (!orderSnapshot.exists()) {
+            return res.status(404).send('Order not found');
+        }
+
+        // Delete the order document
+        await deleteDoc(orderDoc);
+
+        res.status(200).send('Order deleted successfully');
+    } catch (error) {
+        res.status(500).send(`Error deleting order: ${error.message}`);
+    }
+};
