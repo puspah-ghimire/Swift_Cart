@@ -6,10 +6,8 @@ import { useContext } from 'react'
 import { MdOutlineEmail } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
-import ProductCard from '../../components/productCard/ProductCard'
 import ProdCard from '../../components/productCard/ProdCard'
 import { Link } from 'react-router-dom'
-
 
 const Profile = () => {
   const context = useContext(myContext)
@@ -28,9 +26,9 @@ const Profile = () => {
           
           <div className='md:mb-12 md:mx-8 flex flex-col items-center'>
             <ul className='flex flex-col items-center'>
-              <li className='mb-2'>Aayush Man Shakya</li>
-              <li className='mb-2 flex items-center gap-2'><MdOutlineEmail/>aayushman950@gmail.com</li>
-              <li className='mb-2 flex items-center gap-2'><FaLocationDot />Baneshwor, Kathmandu</li>
+              <li className='mb-2'>aayush</li>
+              <li className='mb-2 flex items-center gap-2'><MdOutlineEmail/>aayush@gmail.com</li>
+              <li className='mb-2 flex items-center gap-2'><FaLocationDot />address</li>
               <li className='mb-2 flex items-center gap-2'><FaPhoneAlt />9861666110</li>
             </ul>
             <Link to={'/editprofile/:id'} className='flex'>

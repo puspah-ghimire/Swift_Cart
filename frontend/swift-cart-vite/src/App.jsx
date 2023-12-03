@@ -31,6 +31,7 @@ const App = () => {
           <Route path='/updateproduct' element={<UpdateProduct/>} />
           <Route path='/editprofile/:id' element={<EditProfile/>} />
           <Route path='/profile/:id' element={<Profile/>} />
+          <Route path='/addproduct' element={<AddProduct />} />
         </Routes>
     </Router>
     </MyState>

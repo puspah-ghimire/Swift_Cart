@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState } from 'react'
 import Layout from '../../components/layout/Layout'
 import profile from '/profile.svg'
 import myContext from '../../context/data/myContext'
@@ -6,6 +6,23 @@ import myContext from '../../context/data/myContext'
 const EditProfile = () => {
   const context = useContext(myContext)
   const { mode } = context
+
+  const [user, setUser] = useState({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    email: '',
+    address: '',
+    phone: '',
+  })
+
+  let name, value
+  const handleChange = (e) => {
+    name = e.target.name
+    value = e.target.value
+
+    setUser ({...user, [name]:value})
+  }
 
   return (
     <Layout>
@@ -23,44 +40,46 @@ const EditProfile = () => {
             <form className='flex flex-col items-center'>
               <label className='mb-2 w-full'>
                 <p className='text-sm ml-2'>First Name</p>
-                <input type="text" className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark   focus:outline-none' required />
+                <input type="text" 
+                defaultValue='hi'
+                
+                onChange={handleChange}
+                className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark   focus:outline-none' required />
               </label>
               <label className='mb-2 w-full'>
                 <p className='text-sm ml-2'>Middle Name</p>
-                <input type="text" className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark   focus:outline-none' />
+                <input type="text" 
+                value={user.middleNameName}
+                onChange={handleChange}
+                className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark   focus:outline-none' />
               </label>
               <label className='mb-2 w-full'>
                 <p className='text-sm ml-2'>Last Name</p>
-                <input type="text" className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark   focus:outline-none' required/>
-              </label>
-              <label className='mb-2 w-full'>
-                <p className='text-sm ml-2'>Date of Birth</p>
-                <input type="date" className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark   focus:outline-none'/>
+                <input type="text" 
+                value={user.lastName}
+                onChange={handleChange}
+                className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark   focus:outline-none' required/>
               </label>
               <label className='mb-2 w-full'>
                 <p className='text-sm ml-2'>Phone Number</p>
-                <input type="number" className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark   focus:outline-none'/>
-              </label>
-              <label className='mb-2 w-full'>
-                <p className='text-sm ml-2'>Province</p>
-                <select 
-                  className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark focus:outline-none text-black'>
-                  <option value="province1">Province 1</option>
-                  <option value="province2">Province 2</option>
-                  <option value="province3">Bagmati</option>
-                  <option value="province4">Gandaki</option>
-                  <option value="province5">Lumbini</option>
-                  <option value="province6">Karnali</option>
-                  <option value="province7">Sudurpaschim</option>
-                </select>
+                <input type="number" 
+                value={user.phone}
+                onChange={handleChange}
+                className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark   focus:outline-none'/>
               </label>
               <label className='mb-2 w-full'>
                 <p className='text-sm ml-2'>Address</p>
-                <input type="text" className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark   focus:outline-none'/>
+                <input type="text" 
+                value={user.address}
+                onChange={handleChange}
+                className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark   focus:outline-none'/>
               </label>
               <label className=' w-full'>
                 <p className='text-sm ml-2'>e-mail</p>
-                <input type="email" className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark  focus:outline-none'/>
+                <input type="email" 
+                value={user.email}
+                onChange={handleChange}
+                className='border-swiftCart w-72 border-solid border-2 rounded-md p-2 focus:border-swiftCartDark  focus:outline-none'/>
               </label>
               <label>
                 <input type="submit" className='mb-4 bg-red-500 my-4 py-2 px-4 rounded-lg text-white font-bold hover:bg-red-600 md:hidden'  value='Save Changes' />
