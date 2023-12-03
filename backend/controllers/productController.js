@@ -31,7 +31,7 @@ export const createProduct = async (req, res, next) => {
 // Get all products with search, category, and price range filters along with pagination
 export const getProducts = async (req, res, next) => {
   try {
-    const { page } = req.query;
+    const { page, search, category, minPrice, maxPrice } = req.query;
     const productsPerPage = 8;
     const startIndex = page ? (parseInt(page) - 1) * productsPerPage : 0;
 
@@ -48,8 +48,15 @@ export const getProducts = async (req, res, next) => {
     let count = 0;
 
     productsSnapshot.forEach((doc) => {
-      if (count >= startIndex && productArray.length < productsPerPage) {
-        const productData = doc.data();
+      const productData = doc.data();
+
+      // Apply filters
+      if (
+        (!search || productData.name.toLowerCase().includes(search.toLowerCase())) &&
+        (!category || productData.category.toLowerCase() === category.toLowerCase()) &&
+        (!minPrice || parseFloat(productData.price) >= parseFloat(minPrice)) &&
+        (!maxPrice || parseFloat(productData.price) <= parseFloat(maxPrice))
+      ) {
         const product = new Product(
           doc.id,
           productData.name,
@@ -62,12 +69,21 @@ export const getProducts = async (req, res, next) => {
           productData.numOfReviews,
           productData.amountInStock
         );
+
         productArray.push(product);
       }
       count++;
     });
 
-    res.status(200).send(productArray);
+    if (productArray.length === 0) {
+      res.status(404).send('No Products found');
+      return;
+    }
+
+    // Apply pagination
+    const paginatedProducts = productArray.slice(startIndex, startIndex + productsPerPage);
+
+    res.status(200).send(paginatedProducts);
   } catch (error) {
     res.status(500).send(error.message);
   }
