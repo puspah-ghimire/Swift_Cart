@@ -62,7 +62,7 @@ export default function Navbar() {
 
                       <img
                         className="inline-block w-10 h-10 rounded-full"
-                        src='public/profile.svg'
+                        src='profile.svg'
                         alt="profile" />                                      
                   </div>
                 </div>
@@ -122,7 +122,7 @@ export default function Navbar() {
                   <a href="" className="flex items-center text-gray-700 ">
                     <img
                       className="inline-block w-10 h-10 rounded-full"
-                      src='public/profile.svg'
+                      src='/profile.svg'
                       alt="profile" />
                   </a>
                 </div>
