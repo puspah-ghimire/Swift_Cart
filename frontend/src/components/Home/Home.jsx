@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { FaArrowDown } from "react-icons/fa";
 import Product from "./Product.jsx"
 import MetaData from '../layout/MetaData.jsx';
-import {getProduct} from '../../../src/actions/productAction.jsx'
-import {useSelector, useDispatch} from 'react-redux'
-
 
 const product = {
   name:"Laptop",
@@ -14,16 +11,6 @@ const product = {
 }
 
 const Home = () => {
-  const dispatch = useDispatch()
-  const {loading, error, products, productsCount} = useSelector(
-    (state) => state.products
-  )
-
-  useEffect(() => {
-    dispatch(getProduct())
-  }, [dispatch])
-  
-
   return (
     <>
     <MetaData title="Swift Cart" />
@@ -46,11 +33,16 @@ const Home = () => {
         <div className="h-1 w-60 bg-blue-700 rounded mb-6"></div>
       </div>
       <div className='flex flex-wrap md:w-4/5 md:gap-8 gap-4 justify-center md:mb-8 mb-4'>
-        
-        {products && products.map(product => (
-          <Product product={product}/>
-        ))}
-        
+        <Product product={product}/>
+        <Product product={product}/>
+        <Product product={product}/>
+        <Product product={product}/>
+      </div>
+      <div className='flex flex-wrap md:w-4/5 md:gap-8 gap-4 justify-center mb-8'>
+        <Product product={product}/>
+        <Product product={product}/>
+        <Product product={product}/>
+        <Product product={product}/>
       </div>
     </div>
     </>
