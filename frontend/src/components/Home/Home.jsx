@@ -3,14 +3,27 @@ import { FaArrowDown } from "react-icons/fa";
 import Product from "./Product.jsx"
 import MetaData from '../layout/MetaData.jsx';
 
-const product = {
-  name:"Laptop",
-  price: "Rs.1000",
-  id: "hello",
-  images: [{url:"https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/71p-M3sPhhL.jpg"}]
-}
+import {useDispatch, useSelector} from 'react-redux'
+import { useEffect } from 'react'
+import axios from 'axios'
+import { getProducts } from '../../redux/productSlice'
 
 const Home = () => {
+
+const dispatch = useDispatch()
+const products = useSelector(state=>state.products.products)
+
+useEffect(() => {
+  const fetchData = async()=>{
+    try{
+      const response = await axios.get('http://localhost:4000/api/v1/products');
+      dispatch(getProducts(response.data));
+    }catch(err){
+      console.log(err)
+    }
+  }
+  fetchData();
+}, [])
   return (
     <>
     <MetaData title="Swift Cart" />
@@ -33,16 +46,9 @@ const Home = () => {
         <div className="h-1 w-60 bg-blue-700 rounded mb-6"></div>
       </div>
       <div className='flex flex-wrap md:w-4/5 md:gap-8 gap-4 justify-center md:mb-8 mb-4'>
-        <Product product={product}/>
-        <Product product={product}/>
-        <Product product={product}/>
-        <Product product={product}/>
-      </div>
-      <div className='flex flex-wrap md:w-4/5 md:gap-8 gap-4 justify-center mb-8'>
-        <Product product={product}/>
-        <Product product={product}/>
-        <Product product={product}/>
-        <Product product={product}/>
+      {products.map(product => (
+          <Product key={product.id} product={product} />
+        ))}
       </div>
     </div>
     </>
