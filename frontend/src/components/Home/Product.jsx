@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import ReactStars from "react-rating-stars-component"
 
-const options = {
+export const options = {
   edit: false,
   color: "black",
   value: 4.5,
@@ -14,7 +14,7 @@ const options = {
 const Product = ( {product} ) => {
   return (
     <>
-    <Link to={`/product/:${product.id}`} className=' bg-gray-300 flex flex-col items-start p-2 md:w-[calc(14vmax)] border-2 hover:border-blue-500 w-[calc(40vmin)]'>
+    <Link to={`/product/:${product.id}`} className=' bg-gray-300 flex flex-col items-start p-2 md:w-[calc(14vmax)] border-2 hover:border-blue-500 w-[calc(40vmin)] min-h-[calc(40vmin)]'>
       <img src={product.images} alt={product.name} />
       <p>{product.name}</p>
 
