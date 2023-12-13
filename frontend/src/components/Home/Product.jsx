@@ -14,7 +14,7 @@ const options = {
 const Product = ( {product} ) => {
   return (
     <>
-    <Link to={product.id} className=' bg-gray-300 flex flex-col items-start p-2 md:w-[calc(14vmax)] border-2 hover:border-blue-500 w-[calc(40vmin)]'>
+    <Link to={`/product/:${product.id}`} className=' bg-gray-300 flex flex-col items-start p-2 md:w-[calc(14vmax)] border-2 hover:border-blue-500 w-[calc(40vmin)]'>
       <img src={product.images} alt={product.name} />
       <p>{product.name}</p>
 

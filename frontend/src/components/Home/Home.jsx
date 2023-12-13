@@ -9,21 +9,24 @@ import axios from 'axios'
 import { getProducts } from '../../redux/productSlice'
 
 const Home = () => {
-
-const dispatch = useDispatch()
-const products = useSelector(state=>state.products.products)
-
-useEffect(() => {
-  const fetchData = async()=>{
-    try{
-      const response = await axios.get('http://localhost:4000/api/v1/products');
-      dispatch(getProducts(response.data));
-    }catch(err){
-      console.log(err)
+  const dispatch = useDispatch()
+  const products = useSelector(state=>state.products.products)
+  
+  useEffect(() => {
+    const fetchData = async()=>{
+      try{
+        const response = await axios.get('http://localhost:4000/api/v1/products');
+        dispatch(getProducts(response.data));
+      }catch(err){
+        console.log(err)
+      }
     }
-  }
-  fetchData();
-}, [])
+    fetchData();
+  }, [])
+
+
+
+
   return (
     <>
     <MetaData title="Swift Cart" />
@@ -46,9 +49,9 @@ useEffect(() => {
         <div className="h-1 w-60 bg-blue-700 rounded mb-6"></div>
       </div>
       <div className='flex flex-wrap md:w-4/5 md:gap-8 gap-4 justify-center md:mb-8 mb-4'>
-      {products.map(product => (
-          <Product key={product.id} product={product} />
-        ))}
+        {products.map(product => (
+            <Product key={product.id} product={product} />
+          ))}
       </div>
     </div>
     </>
