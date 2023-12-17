@@ -33,7 +33,7 @@ const ProductDetails = () => {
         <div className='flex flex-col md:mx-14'>
           <div className='mb-4 flex flex-col'>
             <p className='font-bold text-xl'>{productDetails.name}</p>
-            <p className='font-bold text-2xl'>${productDetails.price}</p>
+            <p className='font-bold text-2xl'>{productDetails.price}</p>
             <p>{productDetails.description}</p>
             <div>
               <ReactStars {...options} />

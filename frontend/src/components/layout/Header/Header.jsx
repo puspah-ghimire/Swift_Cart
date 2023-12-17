@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
 import { RxCross2 } from 'react-icons/rx'
+import { Link } from 'react-router-dom'; 
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -46,10 +47,9 @@ export default function Navbar() {
                   </button>
                 </div>
                 <div className="space-y-4 border-t border-gray-200 px-4 py-6">
-                  <div className='flow-root'>
+                  <Link to={'/products'} className=' flow-root'>
                     Products
-
-                  </div>
+                  </Link>
                   <div className="flow-root">
                     About
                   </div>
@@ -109,7 +109,7 @@ export default function Navbar() {
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 lg:gap-4">
 
 
-                    <a href="">Products</a>
+                    <Link to={'/products'}>Products</Link>
                     <a href="">About</a>
                     <a href="">Contact</a>
 
