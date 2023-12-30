@@ -31,7 +31,7 @@ const UserDetails = () => {
 
         <div className=' w-fit md:w-1/2 px-4 py-2'>
           <h1 className=' font-medium text-xl'>Your Products</h1>
-          <div class="h-1 w-20 bg-cyan-700 rounded"></div>
+          <div className="h-1 w-20 bg-cyan-700 rounded"></div>
           <div className='md:grid md:grid-cols-3 flex flex-col'>
             //user ko products
           </div>
