@@ -93,7 +93,6 @@ export const getProducts = async (req, res, next) => {
       res.status(500).send(`Error fetching all products: ${error.message}`);
   }
 };
-
 //Get product by id
 export const getProduct = async (req, res, next) => {
   try {
