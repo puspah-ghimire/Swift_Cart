@@ -5,6 +5,7 @@ import {
     getProducts,
     updateProduct,
     deleteProduct,
+    uploadImage,
 } from '../controllers/productController.js';
 import { authenticateAdmin } from '../Middleware/authMiddleware.js';
 
@@ -13,7 +14,7 @@ router.get('/products', getProducts);
 router.get('/product/:id', getProduct);
 
 // Admin-only route to create a new product
-router.post('/new', authenticateAdmin, createProduct);
+router.post('/new', authenticateAdmin, uploadImage, createProduct);
 
 // Admin-only route to update a product by ID
 router.put('/update/:id', authenticateAdmin, updateProduct);

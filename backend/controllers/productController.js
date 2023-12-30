@@ -9,83 +9,88 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import multer from 'multer';
+import { v4 as uuidv4 } from 'uuid';
+
+// Set up multer
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Define the middleware to handle the file upload
+export const uploadImage = upload.single('image');
 
 // Create Products
 export const createProduct = async (req, res, next) => {
   try {
-    const { name, category, price, description, retailer } = req.body;
+    const { name, price, description, category, brand, amountInStock } = req.body;
+    const imageBuffer = req.file.buffer;
+    const originalFileName = req.file.originalname;
+    const fileExtension = originalFileName.split('.').pop();
 
-    // Check if mandatory fields are provided
-    if (!name || !category || !price || !description || !retailer) {
-      return res.status(400).send('Name, category, price, description, and retailer are mandatory fields');
-    }
+    // Upload image to Firebase Storage
+    const storage = getStorage();
+    const imageFileName = `product_images/${uuidv4()}.${fileExtension}`; // Use a unique filename
+    const imageRef = ref(storage, imageFileName);
+    await uploadBytes(imageRef, imageBuffer);
 
-    const data = req.body;
-    await addDoc(collection(db, 'products'), data);
+    // Get the download URL for the uploaded image
+    const imageUrl = await getDownloadURL(imageRef);
+    
+    const parsedPrice = parseFloat(price);
+    const parsedAmountInStock = parseFloat(amountInStock);
+    // const parsedRating = parseFloat(rating);
+    // const parsedNoOfReviws = parseFloat(noOfReviews);
+
+    // Create Product object with image URL
+    const product = new Product(
+      name,
+      parsedPrice,
+      description,
+      category,
+      brand,
+      parsedAmountInStock,
+      0,
+      0,
+      imageUrl.toString()
+    );
+
+    // Save product to Firestore
+    const productsRef = collection(db, 'products');
+    await addDoc(productsRef, {
+      ...product
+      });
     res.status(200).send('Product created successfully');
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(500).send(`Error creating product: ${error.message}`);
   }
 };
 
-// Get all products with search, category, and price range filters along with pagination
 export const getProducts = async (req, res, next) => {
   try {
-    const { page, search, category, minPrice, maxPrice } = req.query;
-    const productsPerPage = 8;
-    const startIndex = page ? (parseInt(page) - 1) * productsPerPage : 0;
+      const productsRef = collection(db, 'products');
+      const productsSnapshot = await getDocs(productsRef);
 
-    const productsRef = collection(db, 'products');
-    const productsSnapshot = await getDocs(productsRef);
-
-    const productArray = [];
-
-    if (productsSnapshot.empty) {
-      res.status(404).send('No Products found');
-      return;
-    }
-
-    let count = 0;
-
-    productsSnapshot.forEach((doc) => {
-      const productData = doc.data();
-
-      // Apply filters
-      if (
-        (!search || productData.name.toLowerCase().includes(search.toLowerCase())) &&
-        (!category || productData.category.toLowerCase() === category.toLowerCase()) &&
-        (!minPrice || parseFloat(productData.price) >= parseFloat(minPrice)) &&
-        (!maxPrice || parseFloat(productData.price) <= parseFloat(maxPrice))
-      ) {
-        const product = new Product(
-          doc.id,
-          productData.name,
-          productData.price,
-          productData.description,
-          productData.rating,
-          productData.images,
-          productData.category,
-          productData.retailer,
-          productData.numOfReviews,
-          productData.amountInStock
-        );
-
-        productArray.push(product);
+      if (productsSnapshot.empty) {
+          return res.status(404).send('No products found');
       }
-      count++;
-    });
 
-    if (productArray.length === 0) {
-      res.status(404).send('No Products found');
-      return;
-    }
+      const allproducts = [];
 
-    // Apply pagination
-    const paginatedProducts = productArray.slice(startIndex, startIndex + productsPerPage);
+      productsSnapshot.forEach((doc) => {
+          const productData = doc.data();
 
-    res.status(200).send(paginatedProducts);
+          const productWithId = {
+              ...productData,
+              id: doc.id
+          };
+
+          allproducts.push(productWithId);
+      });
+
+      res.status(200).send(allproducts);
   } catch (error) {
-    res.status(500).send(error.message);
+      res.status(500).send(`Error fetching all products: ${error.message}`);
   }
 };
 
