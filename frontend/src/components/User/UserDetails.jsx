@@ -27,7 +27,7 @@ const UserDetails = () => {
         <div className='flex flex-col items-center md:border-2 md:border-swiftCart md:border-solid md:w-1/4 md:rounded-3xl h-fit'
         >
           <div className='flex flex-col align-middle items-center w-1/2 md:w-1/4 mt-8 md:mt-14 mb-4'>
-            <img src={profile} alt="Profile Picture" className=' rounded-full bg-swiftCartLight'/>
+            <img src={user.avatar} alt="Profile Picture" className=' rounded-full bg-swiftCartLight'/>
           </div>
           
           <div className='md:mb-12 md:mx-8 flex flex-col items-center'>

@@ -33,12 +33,14 @@ const ProductDetails = () => {
         <div className='flex flex-col md:mx-14'>
           <div className='mb-4 flex flex-col'>
             <p className='font-bold text-xl'>{productDetails.name}</p>
-            <p className='font-bold text-2xl'>{productDetails.price}</p>
+            <p className='font-bold text-2xl'>${productDetails.price}</p>
             <p>{productDetails.description}</p>
             <div>
               <ReactStars {...options} />
             </div>
-            <p>Retailer: {productDetails.retailer}</p>
+            <p>Category: {productDetails.category}</p>
+            <p>Brand: {productDetails.brand}</p>
+            <p>Stock: {productDetails.amountInStock}</p>
           </div>
           <button className='bg-blue-800 hover:bg-blue-900 text-white w-fit px-4 font-bold py-2 rounded-lg'>
             Add to Cart
