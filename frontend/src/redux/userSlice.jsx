@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   user: null, // This will store the authenticated user details
   error: null, // This will store any error messages related to authentication
+  userDetails: null,
 };
 
 const userSlice = createSlice({
@@ -20,8 +21,11 @@ const userSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
+    getUser: (state, action)=>{
+      state.userDetails = action.payload;
+    }
   },
 });
 
-export const { login, logout, setError } = userSlice.actions;
+export const { login, logout, setError, getUser } = userSlice.actions;
 export default userSlice.reducer;

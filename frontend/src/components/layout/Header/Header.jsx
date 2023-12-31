@@ -4,20 +4,30 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'; 
-import { getUserInfo } from '../../../../../backend/controllers/authController';
-import { getAuth } from 'firebase/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react'
+import axios from 'axios'
+import {getUser} from '../../../redux/userSlice'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
-  
-  const auth = getAuth();
-  const user = auth.currentUser; //return garena yesle
-  
-  const admin = 0 //admin kasari check garne ho
 
-
-  if (user) {
+  const dispatch = useDispatch()
+  const userDetails = useSelector(state=>state.user.userDetails)
+  useEffect(() => {
+    const fetchData = async()=>{
+      try{
+        const response = await axios.get('http://localhost:4000/api/v1/auth/user');
+        dispatch(getUser(response.data));
+      }catch(err){
+        console.log(err)
+      }
+    }
+    fetchData();
+  }, [dispatch])
+  try{
+  if (userDetails.role == 'user') {
     return (
       <div className="bg-white sticky top-0 z-50  "  >
         {/* Mobile menu */}
@@ -154,7 +164,7 @@ export default function Navbar() {
         </header>
       </div>
     )
-  } else if(admin) {
+  } else if(userDetails.role === 'admin') {
     return (
       <div className="bg-white sticky top-0 z-50  "  >
         {/* Mobile menu */}
@@ -291,7 +301,7 @@ export default function Navbar() {
         </header>
       </div>
     )
-  } else {
+  }}catch(err){ 
     return (
     <div className="bg-white sticky top-0 z-50  "  >
       {/* Mobile menu */}
