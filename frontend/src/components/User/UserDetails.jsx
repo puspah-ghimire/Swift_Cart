@@ -4,11 +4,9 @@ import { MdOutlineEmail } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-import Product from '../Home/Product';
 
 import { fetchUserData } from '../../redux/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../../redux/userSlice';
 
 const UserDetails = () => {
 
