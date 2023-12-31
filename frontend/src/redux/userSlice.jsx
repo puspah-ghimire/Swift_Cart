@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
   user: null, // This will store the authenticated user details
@@ -27,5 +28,14 @@ const userSlice = createSlice({
   },
 });
 
-export const { login, logout, setError, getUser } = userSlice.actions;
+export const { login, logout, setError, getUser, } = userSlice.actions;
+export const fetchUserData =()=> async(dispatch)=>{
+  try{
+    const response = await axios.get('http://localhost:4000/api/v1/auth/user');
+    dispatch(getUser(response.data));
+  }catch(err){
+    console.log(err)
+  }
+}
+
 export default userSlice.reducer;

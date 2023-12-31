@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 import profile from '/profile.svg'
 import { MdOutlineEmail } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
@@ -6,7 +6,23 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import Product from '../Home/Product';
 
+import { fetchUserData } from '../../redux/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../../redux/userSlice';
+
 const UserDetails = () => {
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.userDetails);
+
+  useEffect(() => {
+    dispatch(fetchUserData());
+  }, [dispatch]);
+
+  if (!user) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <div className='flex justify-evenly md:py-8 flex-col md:flex-row h-screen'>
@@ -18,10 +34,10 @@ const UserDetails = () => {
           
           <div className='md:mb-12 md:mx-8 flex flex-col items-center'>
             <ul className='flex flex-col items-center'>
-              <li className='mb-2'>aayush</li>
-              <li className='mb-2 flex items-center gap-2'><MdOutlineEmail/>aayush@gmail.com</li>
-              <li className='mb-2 flex items-center gap-2'><FaLocationDot />address</li>
-              <li className='mb-2 flex items-center gap-2'><FaPhoneAlt />9812345678</li>
+              <li className='mb-2'>{user.name}</li>
+              <li className='mb-2 flex items-center gap-2'><MdOutlineEmail/>{user.email}</li>
+              <li className='mb-2 flex items-center gap-2'><FaLocationDot />{user.id}</li>
+              <li className='mb-2 flex items-center gap-2'><FaPhoneAlt />{user.role}</li>
             </ul>
             <Link to={'/editprofile/:id'} className='flex'>
               <button className='mb-4 bg-red-500 my-4 py-2 px-4 rounded-lg text-white font-bold hover:bg-red-600 md:block'>Edit Profile</button>
