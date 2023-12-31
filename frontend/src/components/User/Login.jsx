@@ -24,6 +24,7 @@ function Login() {
       } else {
         dispatch(login(response.data));
         navigate('/'); // Redirect to the home page after successful login
+        window.location.reload();
       }
     } catch (error) {
       dispatch(setError('An error occurred during login. Please try again.'));
