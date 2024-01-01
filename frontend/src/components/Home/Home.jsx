@@ -24,9 +24,6 @@ const Home = () => {
     fetchData();
   }, [])
 
-
-
-
   return (
     <>
     <MetaData title="Swift Cart" />

@@ -1,11 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
 
 const productSlice = createSlice({
   name: 'products',
   initialState: {
     products: [],
     productDetails: null,
+    selectedItems: [],
   },
   reducers: {
     getProducts: (state, action) => {
@@ -14,10 +15,13 @@ const productSlice = createSlice({
     getSingleProduct: (state, action) => {
       state.productDetails = action.payload;
     },
+    addSelectedItem: (state, action) => {
+      state.selectedItems.push(action.payload);
+    },
   },
 });
 
-export const { getProducts, getSingleProduct } = productSlice.actions;
+export const { getProducts, getSingleProduct, addSelectedItem } = productSlice.actions;
 
 export const fetchProductDetails = (productId) => async (dispatch) => {
   try {

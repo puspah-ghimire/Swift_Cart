@@ -6,10 +6,10 @@ import ReactStars from 'react-rating-stars-component';
 import { options } from '../Home/Product';
 import { Link, useParams } from 'react-router-dom';
 import { fetchUserData } from '../../redux/userSlice';
-
+import { addSelectedItem } from '../../redux/productSlice';
 
 const ProductDetails = () => {
-  const [buttonText, setButtonText] = useState("Add to Cart")
+  const [buttonText, setButtonText] = useState('Add to Cart');
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userDetails);
@@ -25,6 +25,11 @@ const ProductDetails = () => {
   useEffect(() => {
     dispatch(fetchProductDetails(cleanedId));
   }, [dispatch, cleanedId]);
+
+  const handleAddToCart = () => {
+    dispatch(addSelectedItem(productDetails));
+    setButtonText('Added to Cart');
+  };
 
   if (!productDetails) {
     return <p>Loading...</p>;
@@ -51,15 +56,14 @@ const ProductDetails = () => {
               <p>Brand: {productDetails.brand}</p>
               <p>Stock: {productDetails.amountInStock}</p>
             </div>
-            <Link to="/login" className='bg-blue-800 hover:bg-blue-900 text-white w-fit px-4 font-bold py-2 rounded-lg'>
-              Add to Cart
+            <Link to='/login' className='bg-blue-800 hover:bg-blue-900 text-white w-fit px-4 font-bold py-2 rounded-lg' onClick={handleAddToCart}>
+              {buttonText}
             </Link>
           </div>
         </div>
       </>
     );
   } else {
-
     return (
       <>
         <div className='flex flex-col md:flex-row md:p-12 md:py-20 p-6'>
@@ -82,13 +86,14 @@ const ProductDetails = () => {
               <p>Brand: {productDetails.brand}</p>
               <p>Stock: {productDetails.amountInStock}</p>
             </div>
-            <button onClick={() => setButtonText("Added to Cart")} className=' pb-4 bg-blue-500 text-white hover:bg-blue-600 py-4 w-full rounded-lg text-center font-bold'>{buttonText}</button>
+            <button onClick={handleAddToCart} className='pb-4 bg-blue-500 text-white hover:bg-blue-600 py-4 w-full rounded-lg text-center font-bold'>
+              {buttonText}
+            </button>
           </div>
         </div>
       </>
     );
   }
-
 };
 
 export default ProductDetails;
