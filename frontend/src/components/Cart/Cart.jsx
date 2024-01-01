@@ -25,7 +25,7 @@ const Cart = () => {
           <p className=' text-xl'>Total:</p>
           <p className=' text-xl font-bold'>200</p>
         </div>
-        <button className=' bg-blue-500 text-white px-8 hover:bg-blue-600 py-2 mb-4 rounded-lg'>Checkout</button>
+        <Link to={'/payment'} className=' bg-blue-500 text-white px-8 hover:bg-blue-600 py-2 mb-4 rounded-lg'>Checkout</Link>
       </div>
     </div>
     </>
