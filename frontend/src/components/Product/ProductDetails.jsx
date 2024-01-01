@@ -52,7 +52,7 @@ const ProductDetails = () => {
               <p>Stock: {productDetails.amountInStock}</p>
             </div>
             <Link to="/login" className='bg-blue-800 hover:bg-blue-900 text-white w-fit px-4 font-bold py-2 rounded-lg'>
-              Login to Buy
+              Add to Cart
             </Link>
           </div>
         </div>
