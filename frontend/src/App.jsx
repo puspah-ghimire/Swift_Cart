@@ -11,6 +11,7 @@ import UserDetails from './components/User/UserDetails.jsx'
 import Signup from './components/User/Signup.jsx'
 import Login from './components/User/Login.jsx'
 import Cart from './components/Cart/Cart.jsx'
+import EditProfile from './components/User/EditProfile.jsx'
 
 const App = () => {
   const products = useSelector(state=>state.products.products)
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/products" element={<Products />} />
         <Route path="/products/:keyword" element={<Products />} />
         <Route path="/profile" element={<UserDetails />} />
+        <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

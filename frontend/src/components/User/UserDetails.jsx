@@ -37,7 +37,7 @@ const UserDetails = () => {
               <li className='mb-2 flex items-center gap-2'><FaLocationDot />{user.id}</li>
               <li className='mb-2 flex items-center gap-2'><FaPhoneAlt />{user.role}</li>
             </ul>
-            <Link to={'/editprofile/:id'} className='flex'>
+            <Link to={'/editprofile'} className='flex'>
               <button className='mb-4 bg-red-500 my-4 py-2 px-4 rounded-lg text-white font-bold hover:bg-red-600 md:block'>Edit Profile</button>
             </Link>
           </div>
@@ -47,7 +47,7 @@ const UserDetails = () => {
           <h1 className=' font-medium text-xl'>Your Products</h1>
           <div className="h-1 w-20 bg-cyan-700 rounded"></div>
           <div className='md:grid md:grid-cols-3 flex flex-col'>
-            //user ko products
+            user ko products
           </div>
         </div>
       </div>

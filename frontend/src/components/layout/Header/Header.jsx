@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchUserData } from "../../../redux/userSlice";
 
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -112,9 +113,9 @@ export default function Navbar() {
                 {/* Logo */}
                 <div className="ml-4 flex lg:ml-0">
                   <div className="flex ">
-                    <h1 className=" text-2xl font-bold text-black  px-2 py-1 rounded">
+                    <Link to={"/"} className=" text-2xl font-bold text-black  px-2 py-1 rounded">
                       Swift Cart
-                    </h1>
+                    </Link>
                   </div>
                 </div>
 
@@ -245,9 +246,9 @@ export default function Navbar() {
                 {/* Logo */}
                 <div className="ml-4 flex lg:ml-0">
                   <div className="flex ">
-                    <h1 className=" text-2xl font-bold text-black  px-2 py-1 rounded">
+                    <Link to={"/"} className=" text-2xl font-bold text-black  px-2 py-1 rounded">
                       Swift Cart
-                    </h1>
+                    </Link>
                   </div>
                 </div>
 
@@ -279,9 +280,9 @@ export default function Navbar() {
 
                   {/* Cart */}
                   <div className="ml-4 flow-root lg:ml-6 text-4xl">
-                    <button>
+                    <Link to={"/cart"}>
                       <AiOutlineShoppingCart />
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -389,9 +390,9 @@ export default function Navbar() {
                 {/* Logo */}
                 <div className="ml-4 flex lg:ml-0">
                   <div className="flex ">
-                    <h1 className=" text-2xl font-bold text-black  px-2 py-1 rounded">
+                    <Link to={"/"} className=" text-2xl font-bold text-black  px-2 py-1 rounded">
                       Swift Cart
-                    </h1>
+                    </Link>
                   </div>
                 </div>
 
