@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductDetails } from '../../redux/productSlice';
@@ -9,6 +9,8 @@ import { fetchUserData } from '../../redux/userSlice';
 
 
 const ProductDetails = () => {
+  const [buttonText, setButtonText] = useState("Add to Cart")
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userDetails);
 
@@ -80,9 +82,7 @@ const ProductDetails = () => {
               <p>Brand: {productDetails.brand}</p>
               <p>Stock: {productDetails.amountInStock}</p>
             </div>
-            <Link to={'/cart'} className='bg-blue-800 hover:bg-blue-900 text-white w-fit px-4 font-bold py-2 rounded-lg'>
-              Add to Cart
-            </Link>
+            <button onClick={() => setButtonText("Added to Cart")} className=' pb-4 bg-blue-500 text-white hover:bg-blue-600 py-4 w-full rounded-lg text-center font-bold'>{buttonText}</button>
           </div>
         </div>
       </>
