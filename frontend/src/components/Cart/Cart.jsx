@@ -2,6 +2,11 @@ import React from 'react'
 import CartItemsCard from './CartItemsCard'
 import { Link } from 'react-router-dom'
 
+import {useDispatch, useSelector} from 'react-redux'
+import { useEffect } from 'react'
+import axios from 'axios'
+import { getProducts } from '../../redux/productSlice'
+
 
 const Cart = () => {
   const item = {
@@ -10,6 +15,22 @@ const Cart = () => {
     name:"Product Name",
     image: "",
   }
+
+  const dispatch = useDispatch()
+  const products = useSelector(state=>state.products.products)
+  
+  useEffect(() => {
+    const fetchData = async()=>{
+      try{
+        const response = await axios.get('http://localhost:4000/api/v1/products');
+        dispatch(getProducts(response.data));
+      }catch(err){
+        console.log(err)
+      }
+    }
+    fetchData();
+  }, [])
+
   return (
     <>
     <div className=''>
@@ -18,6 +39,10 @@ const Cart = () => {
         <CartItemsCard item={item} />
         <CartItemsCard item={item} />
         <CartItemsCard item={item} />
+
+        {products.map(product => (
+            <CartItemsCard key={product.id} item={product} />
+          ))}
       </div>
       <div className=' flex flex-col items-center'>
         <div className='h-1 rounded bg-blue-700 md:w-1/5 w-2/3 mb-4'></div>
