@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ReactStars from "react-rating-stars-component"
 
 export const options = {
@@ -12,6 +12,7 @@ export const options = {
 }
 
 const Product = ( {product} ) => {
+  const navigate = useNavigate()
   return (
     <>
     <Link to={`/product/:${product.id}`} className=' bg-gray-300 flex flex-col items-start justify-center p-2 md:w-[calc(14vmax)] border-2 hover:border-blue-500 w-[calc(40vmin)] min-h-[calc(20vmin)]'>
@@ -22,7 +23,9 @@ const Product = ( {product} ) => {
         <ReactStars {...options}/> <span className=' font-extralight text-sm'>(256 reviews)</span>
       </div>
 
-      <span className=' font-bold text-lg'>${product.price}</span>
+      <span className=' font-bold text-lg mb-2'>${product.price}</span>
+
+      <Link to={'/cart'} className=' bg-blue-500 text-white hover:bg-blue-600 py-4 w-full rounded-lg text-center font-bold'>Add To Cart</Link>
     </Link>
     </>
   )
