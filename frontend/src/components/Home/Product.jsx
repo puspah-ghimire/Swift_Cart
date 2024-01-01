@@ -14,8 +14,8 @@ export const options = {
 const Product = ( {product} ) => {
   return (
     <>
-    <Link to={`/product/:${product.id}`} className=' bg-gray-300 flex flex-col items-start p-2 md:w-[calc(14vmax)] border-2 hover:border-blue-500 w-[calc(40vmin)] min-h-[calc(40vmin)]'>
-      <img src={product.images} alt={product.name} />
+    <Link to={`/product/:${product.id}`} className=' bg-gray-300 flex flex-col items-start justify-center p-2 md:w-[calc(14vmax)] border-2 hover:border-blue-500 w-[calc(40vmin)] min-h-[calc(20vmin)]'>
+      <img src={product.images} alt={product.name} className=' h-1/2 self-center'/>
       <p><span className=' font-bold text-lg'>{product.name}</span></p>
 
       <div className='md:flex items-center w-full justify-between'>
