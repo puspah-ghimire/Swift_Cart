@@ -53,7 +53,7 @@ const Product = ( {product} ) => {
           <div className=' h-1/4'>
             <p><span className=' font-bold text-lg'>{product.name}</span></p>
       
-            <div className='md:flex items-center w-full justify-between'>
+            <div className='md:flex flex-wrap items-center w-full justify-between'>
               <ReactStars {...options}/> <span className=' font-extralight text-sm'>(256 reviews)</span>
             </div>
       

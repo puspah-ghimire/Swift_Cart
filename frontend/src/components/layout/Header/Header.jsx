@@ -423,7 +423,7 @@ export default function Navbar() {
                   </div>
 
                   <div className="ml-4 flow-root lg:ml-6 text-xl">
-                    <button>Dashboard</button>
+                    <Link to={'/dashboard'}>Dashboard</Link>
                   </div>
                 </div>
               </div>

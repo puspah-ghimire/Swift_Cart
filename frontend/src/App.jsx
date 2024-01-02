@@ -13,6 +13,7 @@ import Login from './components/User/Login.jsx'
 import Cart from './components/Cart/Cart.jsx'
 import EditProfile from './components/User/EditProfile.jsx'
 import PaymentPage from './components/Product/PaymentPage.jsx'
+import Dashboard from './components/Dashboard/Dashboard.jsx'
 
 const App = () => {
   const products = useSelector(state=>state.products.products)
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
     <Footer />
