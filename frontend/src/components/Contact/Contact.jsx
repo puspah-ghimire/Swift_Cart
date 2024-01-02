@@ -31,11 +31,11 @@ const Contact = () => {
             <p>Aayush Man Shakya</p>
             <div className="flex gap-2 items-center">
               <MdOutlineEmail />
-              <p>aayushman950@gmail.com</p>
+              <p>edith.puspa@gmail.com</p>
             </div>
             <div className="flex gap-2 items-center">
               <FaPhoneAlt />
-              <p>9861666110</p>
+              <p>9800000000</p>
             </div>
           </div>
         </div>
@@ -44,11 +44,11 @@ const Contact = () => {
             <p>Aayush Man Shakya</p>
             <div className="flex gap-2 items-center">
               <MdOutlineEmail />
-              <p>aayushman950@gmail.com</p>
+              <p>abbalbaral10@gmail.com</p>
             </div>
             <div className="flex gap-2 items-center">
               <FaPhoneAlt />
-              <p>9861666110</p>
+              <p>9838947298</p>
             </div>
           </div>
         </div>
