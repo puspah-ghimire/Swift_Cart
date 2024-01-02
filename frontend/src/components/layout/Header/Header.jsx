@@ -67,8 +67,8 @@ export default function Navbar() {
                     <Link to={"/products"} className=" flow-root">
                       Products
                     </Link>
-                    <div className="flow-root">About</div>
-                    <div className="flow-root">Contact</div>
+                    <div className="flow-root"><Link to={'/about'}>About</Link></div>
+                    <div className="flow-root"><Link to={'/contact'}>Contact</Link></div>
 
                     <div className="flow-root">
                       <a href="/login">Login</a>
@@ -128,8 +128,8 @@ export default function Navbar() {
 
                   <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 lg:gap-4">
                     <Link to={"/products"}>Products</Link>
-                    <a href="">About</a>
-                    <a href="">Contact</a>
+                    <Link to={'/about'}>About</Link>
+                    <Link to={'/contact'}>Contact</Link>
                   </div>
 
                   <div className="lg:ml-8 lg:flex">
@@ -194,8 +194,8 @@ export default function Navbar() {
                     <Link to={"/products"} className=" flow-root">
                       Products
                     </Link>
-                    <div className="flow-root">About</div>
-                    <div className="flow-root">Contact</div>
+                    <div className="flow-root"><Link to={'/about'}>About</Link></div>
+                    <div className="flow-root"><Link to={'/contact'}>Contact</Link></div>
 
                     <div className="flow-root">
                       <a href="/profile">
@@ -261,8 +261,8 @@ export default function Navbar() {
 
                   <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 lg:gap-4">
                     <Link to={"/products"}>Products</Link>
-                    <a href="">About</a>
-                    <a href="">Contact</a>
+                    <Link to={'/about'}>About</Link>
+                    <Link to={'/contact'}>Contact</Link>
                   </div>
 
                   <div className="hidden lg:ml-8 lg:flex">
@@ -338,8 +338,8 @@ export default function Navbar() {
                     <Link to={"/products"} className=" flow-root">
                       Products
                     </Link>
-                    <div className="flow-root">About</div>
-                    <div className="flow-root">Contact</div>
+                    <div className="flow-root"><Link to={'/about'}>About</Link></div>
+                    <div className="flow-root"><Link to={'/contact'}>Contact</Link></div>
 
                     <div className="flow-root">
                       <a href="/profile">
@@ -405,8 +405,8 @@ export default function Navbar() {
 
                   <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 lg:gap-4">
                     <Link to={"/products"}>Products</Link>
-                    <a href="">About</a>
-                    <a href="">Contact</a>
+                    <Link to={'/about'}>About</Link>
+                    <Link to={'/contact'}>Contact</Link>
                   </div>
 
                   <div className="hidden lg:ml-8 lg:flex">

@@ -14,6 +14,8 @@ import Cart from './components/Cart/Cart.jsx'
 import EditProfile from './components/User/EditProfile.jsx'
 import PaymentPage from './components/Product/PaymentPage.jsx'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
+import Contact from './components/Contact/Contact.jsx'
+import About from './components/About/About.jsx'
 
 const App = () => {
   const products = useSelector(state=>state.products.products)
@@ -34,6 +36,8 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </Router>
     <Footer />
