@@ -5,13 +5,13 @@ import { MdOutlineEmail } from "react-icons/md";
 const Contact = () => {
   return (
     <>
-    <div className=" h-[calc(40vmax)] flex flex-col items-center justify-center">
+    <div className=" min-h-[calc(40vmax)] flex flex-col">
 
       <div className="flex flex-col items-center">
         <h1 className="text-2xl font-bold mb-1 mt-8">Contact Us</h1>
         <div className="h-1 w-60 bg-blue-700 rounded mb-6"></div>
       </div>
-      <div className=" flex justify-center">
+      <div className=" flex md:flex-row flex-col justify-center">
 
         <div className="flex justify-center">
           <div className=" m-8  border-2 border-blue-500 rounded-lg p-8">
