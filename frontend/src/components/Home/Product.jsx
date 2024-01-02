@@ -23,7 +23,6 @@ const Product = ( {product} ) => {
     dispatch(fetchUserData());
   }, [dispatch]);
 
-  const [buttonText, setButtonText] = useState("Add to Cart")
 
   if (!user){
     return (
@@ -41,7 +40,7 @@ const Product = ( {product} ) => {
             <span className=' font-bold text-lg'>${product.price}</span>
           </div>
         </Link>
-        <Link to={'/login'} className=' pb-4 bg-blue-500 text-white hover:bg-blue-600 py-4 w-full rounded-lg text-center font-bold'>{buttonText}</Link>
+        
       </div>
       </>
     )
@@ -61,8 +60,7 @@ const Product = ( {product} ) => {
             <span className=' font-bold text-lg'>${product.price}</span>
           </div>
         </Link>
-        <button onClick={() => setButtonText("Added to Cart")} className=' pb-4 bg-blue-500 text-white hover:bg-blue-600 py-4 w-full rounded-lg text-center font-bold'>
-          {buttonText}</button>
+        
       </div>
       </>
     )
