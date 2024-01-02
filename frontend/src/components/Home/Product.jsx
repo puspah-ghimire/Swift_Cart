@@ -27,17 +27,17 @@ const Product = ( {product} ) => {
   if (!user){
     return (
       <>
-      <div className=' bg-gray-300 flex flex-col items-center justify-between p-2 md:w-[calc(14vmax)] border-2 hover:border-blue-500 w-[calc(40vmin)] min-h-[calc(25vmax)]'>
+      <div className=' bg-gray-300 flex flex-col items-center justify-between p-2 md:w-[calc(15vmax)] border-2 hover:border-blue-500 w-[calc(40vmin)] min-h-[calc(25vmax)]'>
         <Link to={`/product/:${product.id}`} className='flex flex-col'>
-          <img src={product.images} alt={product.name} className=' h-1/2 self-center'/>
-          <div className=' h-1/4'>
+          <img src={product.images} alt={product.name} className=' h-40 self-center w-full'/>
+          <div className=''>
             <p><span className=' font-bold text-lg'>{product.name}</span></p>
       
             <div className='md:flex items-center w-full justify-between'>
               <ReactStars {...options}/> <span className=' font-extralight text-sm'>(256 reviews)</span>
             </div>
       
-            <span className=' font-bold text-lg'>${product.price}</span>
+            <p className=' font-bold text-lg'>${product.price}</p>
           </div>
         </Link>
         
