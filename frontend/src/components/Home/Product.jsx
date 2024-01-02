@@ -29,7 +29,7 @@ const Product = ( {product} ) => {
     return (
       <>
       <div className=' bg-gray-300 flex flex-col items-center justify-between p-2 md:w-[calc(14vmax)] border-2 hover:border-blue-500 w-[calc(40vmin)] min-h-[calc(25vmax)]'>
-        <Link to={`/product/:${product.id}`} className='flex flex-col gap-'>
+        <Link to={`/product/:${product.id}`} className='flex flex-col'>
           <img src={product.images} alt={product.name} className=' h-1/2 self-center'/>
           <div className=' h-1/4'>
             <p><span className=' font-bold text-lg'>{product.name}</span></p>
@@ -48,8 +48,8 @@ const Product = ( {product} ) => {
   } else {
     return (
       <>
-      <div className=' bg-gray-300 flex flex-col items-center justify-between p-2 md:w-[calc(14vmax)] border-2 hover:border-blue-500 w-[calc(40vmin)] min-h-[calc(25vmax)]'>
-        <Link to={`/product/:${product.id}`} className='flex flex-col gap-'>
+      <div className=' bg-gray-300 flex flex-col items-center p-2 md:w-[calc(14vmax)] border-2 hover:border-blue-500'>
+        <Link to={`/product/:${product.id}`} className='flex flex-col'>
           <img src={product.images} alt={product.name} className=' h-1/2 self-center'/>
           <div className=' h-1/4'>
             <p><span className=' font-bold text-lg'>{product.name}</span></p>
@@ -61,7 +61,8 @@ const Product = ( {product} ) => {
             <span className=' font-bold text-lg'>${product.price}</span>
           </div>
         </Link>
-        <button onClick={() => setButtonText("Added to Cart")} className=' pb-4 bg-blue-500 text-white hover:bg-blue-600 py-4 w-full rounded-lg text-center font-bold'>{buttonText}</button>
+        <button onClick={() => setButtonText("Added to Cart")} className=' pb-4 bg-blue-500 text-white hover:bg-blue-600 py-4 w-full rounded-lg text-center font-bold'>
+          {buttonText}</button>
       </div>
       </>
     )
