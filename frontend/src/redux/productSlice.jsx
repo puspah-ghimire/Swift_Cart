@@ -18,10 +18,13 @@ const productSlice = createSlice({
     addSelectedItem: (state, action) => {
       state.selectedItems.push(action.payload);
     },
+    removeSelectedItem: (state, action) => {
+      state.selectedItems = state.selectedItems.filter(item => item.id !== action.payload);
+    },
   },
 });
 
-export const { getProducts, getSingleProduct, addSelectedItem } = productSlice.actions;
+export const { getProducts, getSingleProduct, addSelectedItem, removeSelectedItem } = productSlice.actions;
 
 export const fetchProductDetails = (productId) => async (dispatch) => {
   try {
