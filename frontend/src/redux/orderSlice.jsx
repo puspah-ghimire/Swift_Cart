@@ -6,12 +6,12 @@ const orderSlice = createSlice({
     orders: [],
   },
   reducers: {
-    getorders: (state, action) => {
+    getOrders: (state, action) => {
       state.orders = action.payload;
     },
   },
 });
 
-export const { getorders} = orderSlice.actions;
+export const { getOrders } = orderSlice.actions;
 
 export default orderSlice.reducer;
