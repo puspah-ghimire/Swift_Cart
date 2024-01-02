@@ -28,7 +28,7 @@ const Contact = () => {
         </div>
         <div className="flex justify-center">
           <div className=" m-8  border-2 border-blue-500 rounded-lg p-8">
-            <p>Aayush Man Shakya</p>
+            <p>Puspa Hari Ghimire</p>
             <div className="flex gap-2 items-center">
               <MdOutlineEmail />
               <p>edith.puspa@gmail.com</p>
@@ -41,7 +41,7 @@ const Contact = () => {
         </div>
         <div className="flex justify-center">
           <div className=" m-8  border-2 border-blue-500 rounded-lg p-8">
-            <p>Aayush Man Shakya</p>
+            <p>Abbal Baral</p>
             <div className="flex gap-2 items-center">
               <MdOutlineEmail />
               <p>abbalbaral10@gmail.com</p>
