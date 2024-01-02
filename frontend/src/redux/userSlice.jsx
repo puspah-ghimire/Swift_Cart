@@ -18,6 +18,7 @@ const userSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.error = null;
+      state.userDetails = null;
     },
     setError: (state, action) => {
       state.error = action.payload;

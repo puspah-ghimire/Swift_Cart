@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import profile from '/profile.svg'
+import axios from 'axios';
 import { MdOutlineEmail } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -18,31 +18,22 @@ const UserDetails = () => {
     dispatch(fetchUserData());
   }, [dispatch]);
 
-  const logoutSubmit = () => {
-    localStorage.clear();
-    navigate('/');
-    window.location.reload();
-  }
-
-
-  // const logoutSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post('http://localhost:4000/api/v1/auth/login', {
-  //       email: loginEmail,
-  //       password: loginPassword,
-  //     });
-  //     if (response.data.error) {
-  //       dispatch(setError(response.data.error));
-  //     } else {
-  //       dispatch(logout());
-  //       navigate('/'); // Redirect to the home page after successful login
-  //       window.location.reload();
-  //     }
-  //   } catch (error) {
-  //     dispatch(setError('An error occurred during login. Please try again.'));
-  //   }
-  // };
+  const logoutSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:4000/api/v1/auth/logout');
+      if (response.data.error) {
+        dispatch(setError(response.data.error));
+      } else {
+        dispatch(logout(response.data));
+        navigate('/');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch(setError('An error occurred during login. Please try again.'));
+    }
+  };
 
   if (!user) {
     return <p>Loading...</p>;
