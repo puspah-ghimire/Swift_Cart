@@ -93,19 +93,23 @@ export const getProducts = async (req, res, next) => {
       res.status(500).send(`Error fetching all products: ${error.message}`);
   }
 };
-//Get product by id
+
+// Get product by id
 export const getProduct = async (req, res, next) => {
   try {
     const id = req.params.id;
     const product = doc(db, 'products', id);
     const data = await getDoc(product);
+
     if (data.exists()) {
-      res.status(200).send(data.data());
+      const productData = data.data();
+      const responseData = { ...productData, id: data.id };
+      res.status(200).send(responseData);
     } else {
-      res.status(404).send('product not found');
+      res.status(404).send('Product not found');
     }
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
