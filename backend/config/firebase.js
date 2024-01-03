@@ -1,18 +1,22 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: "backend/config/config.env" });
+
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAfsHM5n3sP9zr-KQJrAIkTMNuvXpK_q04",
-  authDomain: "swift-cart-11143.firebaseapp.com",
-  databaseURL: "https://swift-cart-11143-default-rtdb.firebaseio.com",
-  projectId: "swift-cart-11143",
-  storageBucket: "swift-cart-11143.appspot.com",
-  messagingSenderId: "1071863107453",
-  appId: "1:1071863107453:web:136b4a0f189ffb99328614",
-  measurementId: "G-9FK378K0JY"
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  databaseURL: process.env.DATABASE_URL,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
+  measurementId: process.env.MEASUREMENT_ID,
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
 export default db;
