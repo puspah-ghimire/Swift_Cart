@@ -50,7 +50,7 @@ const PaymentPage = () => {
   try {
     const response = await axios.post('http://localhost:4000/api/v1/orders/create', order);
     console.log('Created Order:', response.data);
-    navigate('/');
+    navigate('/success');
     window.location.reload();
   } catch (err) {
     console.error('Error creating order:', err.message, err.response?.data);

@@ -16,6 +16,7 @@ import PaymentPage from './components/Product/PaymentPage.jsx'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
 import Contact from './components/Contact/Contact.jsx'
 import About from './components/About/About.jsx'
+import Success from './components/Cart/Success.jsx'
 
 const App = () => {
   const products = useSelector(state=>state.products.products)
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/success" element={<Success />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/payment" element={<PaymentPage />} />

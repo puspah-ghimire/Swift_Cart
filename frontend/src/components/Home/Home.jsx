@@ -45,7 +45,7 @@ const Home = () => {
         <h1 className='text-2xl font-bold mb-1' >Featured Products</h1>
         <div className="h-1 w-60 bg-blue-700 rounded mb-6"></div>
       </div>
-      <div className='flex flex-wrap md:w-4/5 md:gap-8 gap-4 justify-center md:mb-8 mb-4'>
+      <div className='flex flex-wrap md:w-3/4 md:gap-8 gap-4 justify-center md:mb-8 mb-4'>
         {products.slice(0,8).map(product => (
             <Product key={product.id} product={product} />
           ))}
